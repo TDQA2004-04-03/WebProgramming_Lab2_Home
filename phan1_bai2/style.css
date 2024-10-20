@@ -75,6 +75,14 @@
     background-color: #E1F3D3;
 }
 
+.summary {
+    font-weight: bold;
+}
+
+.center {
+    margin: auto;
+}
+
 #footer {
     width: 100vw;
     height: 5rem;

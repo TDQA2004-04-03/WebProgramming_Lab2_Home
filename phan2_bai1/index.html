@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Document</title>
+
+    <style>
+        .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-xs-12" id="main-table">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-4 col-md-2">
+            <button type="button" class="btn btn-primary" onclick="return addANewTable()">Add a Table</button>
+        </div>
+
+        <div class="col-xs-4 col-md-2">
+            <button type="button" class="btn btn-primary" onclick="return addARow()">Add a Row</button>
+        </div>
+
+        <div class="col-xs-4 col-md-2">
+            <button type="button" class="btn btn-primary" onclick="return addACol()">Add a Column</button>
+        </div>
+
+        <div class="col-xs-4 col-md-2">
+            <button type="button" class="btn btn-primary" onclick="return deleteARow()">Delete a Row</button>
+        </div>
+
+        <div class="col-xs-4 col-md-2">
+            <button type="button" class="btn btn-primary" onclick="return deleteACol()">Delete a Column</button>
+        </div>
+
+        <div class="col-xs-4 col-md-2">
+            <button type="button" class="btn btn-primary" onclick="return deleteATable()">Delete the Table</button>
+        </div>
+    </div>
+
+    <script>
+        var row = 2;
+        var col = 2;
+        function addANewTable() {
+            const table_page = document.getElementById('main-table');
+            table_page.innerHTML = `
+            <table id="table" class="table table-bordered" style="border-color: red;">
+                <tr class="row-table" data-row-id="0">
+                    <td>0-0</td>
+                    <td>0-1</td>
+                </tr>
+
+                <tr class="row-table" data-row-id="1">
+                    <td>1-0</td>
+                    <td>1-1</td>
+                </tr>
+            </table>
+            `;
+            return;
+        }
+
+        function addARow() {
+            var table = document.getElementById('table');
+            var rowAdded = table.insertRow(-1);
+            for (let i = 0; i < col; i++) {
+                var cell = rowAdded.insertCell(-1);
+                cell.textContent = `${row}-${i}`;
+            }
+            rowAdded.setAttribute('data-row-id', `${row}`)
+            row++;
+            return;
+        }
+
+        function addACol() {
+            var listOfRow = document.getElementsByTagName('tr');
+            for (let i = 0; i < row; i++) {
+                var cell = listOfRow[i].insertCell(-1);
+                cell.textContent = `${i}-${col}`;
+            }
+            col++;
+            return;
+        }
+
+        function deleteARow() {
+            let index = prompt("Please enter the row you want to delete");
+            if (index < 0 || index >= row) {
+                alert("Invalid input");
+            }
+            var table = document.getElementById('table');
+            table.querySelector(`[data-row-id="${index}"]`).remove();
+            var listOfRow = document.getElementsByTagName('tr');
+            row--;
+            for (let i = index; i < row; i++) {
+                listOfRow[i].setAttribute('data-row-id', `${i}`);
+            }
+            return;
+        }
+
+        function deleteACol() {
+            let index = prompt("Please enter the column you want to delete");
+            if (index < 0 || index >= col) {
+                alert("Invalid input");
+            }
+
+            var listOfRow = document.getElementsByTagName('tr');
+            for (let i = 0; i < row; i++) {
+                listOfRow[i].deleteCell(index);
+            }
+            col--;
+            return;
+        }
+
+        function deleteATable() {
+            document.getElementById('main-table').innerHTML = ``;
+            row = 2;
+            col = 2;
+        }
+    </script>
+</body>
+</html>
